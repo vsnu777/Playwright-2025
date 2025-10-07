@@ -1,9 +1,22 @@
 name: Playwright Tests
 on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  # push:
+  #   branches: [ main, master ]
+  # pull_request:
+  #   branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select environment'
+        required: true
+        default: 'test'
+        type: choice
+        options:
+          - test
+          - staging
+          - production
+  schedule:
+    - cron: '20 19 * * *'  # Runs daily at midnight UTC
 jobs:
   test:
     timeout-minutes: 60
@@ -17,6 +30,8 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Show selected environment
+      run: echo "Running tests on ${{ github.event.inputs.environment }}"
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
