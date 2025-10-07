@@ -16,7 +16,7 @@ on:
           - staging
           - production
   schedule:
-    - cron: '20 19 * * *'  # Runs daily at midnight UTC
+    - cron: '25 19 * * *'  # Runs daily at midnight IST (19:30 UTC)
 jobs:
   test:
     timeout-minutes: 60
